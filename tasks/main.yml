@@ -24,7 +24,7 @@
     reload: yes
 
 - name: "Install rng-tools for better entropie"
-  dnf:
+  package:
     name: rng-tools
     state: present
 
@@ -35,7 +35,7 @@
     state: started
 
 - name: "Install required packages"
-  dnf:
+  package:
     name: ['@idm:DL1', 'freeipa-server', 'firewalld']
     state: present
   register: freeipa_install
