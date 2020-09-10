@@ -8,7 +8,6 @@ env:
     - ROLE_NAME: apps_logstash
   matrix:
     - MOLECULE_DISTRO: centos8
-    - MOLECULE_DISTRO: centos7
 
 before_install:
   # Upgrade Docker to work with docker-py.
