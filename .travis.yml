@@ -5,7 +5,7 @@ services: docker
 
 env:
   global:
-    - ROLE_NAME: apps_logstash
+    - ROLE_NAME: apps_freeipa-server
   matrix:
     - MOLECULE_DISTRO: centos8
 
@@ -15,7 +15,14 @@ before_install:
 
 install:
   # Install test dependencies.
-  - pip install molecule yamllint ansible-lint docker
+  - pip install molecule yamllint ansible-lint docker molecule-goss
+
+before_script:
+  # To use the role without the ansible github flag 
+  - cd ../
+  - mv ansible-$ROLE_NAME $ROLE_NAME
+  - cd $ROLE_NAME
+
 
 script:
   # Run tests.
