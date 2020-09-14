@@ -1,9 +1,9 @@
-# Ansible Role: ansible-apps_freeipa-server
+# Ansible Role: ansible-apps_freeipa_server
 
 
 ## Description
 
-[![Build Status](https://travis-ci.com/lotusnoir/ansible-apps_freeipa-server.svg?branch=master)](https://travis-ci.com/lotusnoir/ansible-apps_freeipa-server)[![License](https://img.shields.io/badge/license-MIT%20License-brightgreen.svg)](https://opensource.org/licenses/MIT)[![Ansible Role](https://img.shields.io/badge/ansible%20role-apps__freeipa_server-blue)](https://galaxy.ansible.com/lotusnoir/ansible-apps_freeipa-server/)[![GitHub tag](https://img.shields.io/badge/version-latest-blue)](https://github.com/lotusnoir/ansible-apps_freeipa-server/tags)
+[![Build Status](https://travis-ci.com/lotusnoir/ansible-apps_freeipa_server.svg?branch=master)](https://travis-ci.com/lotusnoir/ansible-apps_freeipa_server)[![License](https://img.shields.io/badge/license-MIT%20License-brightgreen.svg)](https://opensource.org/licenses/MIT)[![Ansible Role](https://img.shields.io/badge/ansible%20role-apps__freeipa_server-blue)](https://galaxy.ansible.com/lotusnoir/ansible-apps_freeipa_server/)[![GitHub tag](https://img.shields.io/badge/version-latest-blue)](https://github.com/lotusnoir/ansible-apps_freeipa_server/tags)
 
 Deploy freeipa_server app using ansible on centos.
 
@@ -28,12 +28,12 @@ if you are in a debian system, ensure to have python-firewalld package installed
 ## Examples
 
 	---
-	- hosts: apps_freeipa-server
+	- hosts: apps_freeipa_server
 	  become: yes
 	  become_method: sudo
 	  gather_facts: yes
 	  roles:
-	    - role: ansible-apps_freeipa-server
+	    - role: ansible-apps_freeipa_server
 	  vars:
         freeipa_server_admin_password: "strongpassword"
         freeipa_server_ds_password: "strongpassword"

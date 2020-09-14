@@ -5,7 +5,7 @@ services: docker
 
 env:
   global:
-    - ROLE_NAME: apps_freeipa-server
+    - ROLE_NAME: apps_freeipa_server
   matrix:
     - MOLECULE_DISTRO: centos8
 

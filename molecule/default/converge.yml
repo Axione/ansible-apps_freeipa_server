@@ -10,7 +10,7 @@
       changed_when: false
 
   roles:
-    - role: apps_freeipa-server
+    - role: apps_freeipa_server
 
   vars:
     nodejs_install_npm_user: root
