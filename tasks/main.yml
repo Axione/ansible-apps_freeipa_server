@@ -40,6 +40,11 @@
     state: present
   register: freeipa_install
 
+#- name: "Remove firewalld packages"
+#  package:
+#    name: ['firewalld']
+#    state: absent
+
 - name: "Open firewall ports"
   firewalld:
     service: "{{ item }}"
@@ -55,6 +60,16 @@
     - freeipa-ldap
     - freeipa-ldaps
     - kerberos
+
+- name: "Open firewall ports"
+  firewalld:
+    port: "{{ item }}"
+    permanent: yes
+    state: enabled
+  ignore_errors: yes
+  notify: reload firewalld
+  with_items:
+    - 9100/tcp
 
 - name: "Change Umask to 0022 to make installer working"
   shell: umask 0022 && umask
