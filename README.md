@@ -46,4 +46,4 @@ if you are in a debian system, ensure to have python-firewalld package installed
 
 ## License
 
-This project is licensed under MIT License. See [LICENSE](/LICENSE) for more details.
+This project is licensed under Apache License. See [LICENSE](/LICENSE) for more details.
