@@ -60,6 +60,7 @@
     - freeipa-ldap
     - freeipa-ldaps
     - kerberos
+  tags: firewall
 
 - name: "Open firewall ports"
   firewalld:
@@ -70,6 +71,8 @@
   notify: reload firewalld
   with_items:
     - 9100/tcp
+    - 9128/tcp
+  tags: firewall
 
 - name: "Change Umask to 0022 to make installer working"
   shell: umask 0022 && umask
