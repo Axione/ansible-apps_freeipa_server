@@ -36,7 +36,7 @@
 
 - name: "Install required packages"
   package:
-    name: ['@idm:DL1', 'freeipa-server', 'firewalld']
+    name: ['@idm:DL1', 'freeipa-server', 'firewalld', 'ipa-server-trust-ad', 'samba-client']
     state: present
   register: freeipa_install
 
@@ -62,7 +62,7 @@
     - kerberos
   tags: firewall
 
-- name: "Open firewall ports"
+- name: "Open firewall ports for prometheus"
   firewalld:
     port: "{{ item }}"
     permanent: yes
@@ -72,6 +72,26 @@
   with_items:
     - 9100/tcp
     - 9128/tcp
+  tags: firewall
+
+- name: "Open firewall ports for ad trust"                                                                                                                                                                                                  
+  firewalld:
+    port: "{{ item }}"
+    permanent: yes
+    state: enabled
+  ignore_errors: yes
+  notify: reload firewalld
+  with_items:
+    - 135/tcp
+    - 138/tcp
+    - 139/tcp
+    - 445/tcp
+    - 1024-1500/tcp
+    - 3268/tcp
+    - 138/udp
+    - 139/udp
+    - 389/udp
+    - 445/udp
   tags: firewall
 
 - name: "Change Umask to 0022 to make installer working"
