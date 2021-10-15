@@ -27,3 +27,5 @@ freeipa_client_install_options:
 
 freeipa_replica_install_options:
   - "--setup-ca"
+
+freeipa_server_configure_firewalld: true
