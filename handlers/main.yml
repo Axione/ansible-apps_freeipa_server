@@ -1,11 +1,11 @@
 ---
 - name: restart ipa services
-  service:
+  ansible.builtin.service:
     enabled: true
     name: ipa
     state: restarted
 
 - name: reload firewalld
-  service:
+  ansible.builtin.service:
     name: firewalld
     state: reloaded

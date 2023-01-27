@@ -6,3 +6,6 @@
 
   roles:
     - role: ansible-apps_freeipa_server
+
+  vars:
+    freeipa_server_hosts_path: "/etc/hosts2"

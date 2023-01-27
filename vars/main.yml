@@ -1,2 +1,3 @@
 ---
+freeipa_server_hosts_path: "/etc/hosts"
 freeipa_launch_command: "ipa-{{ 'server' if freeipa_server_type == 'master' else 'replica' }}-install --unattended {{ '--server=' + freeipa_server_master_fqdn if freeipa_server_type == 'replica' else '' }}"
