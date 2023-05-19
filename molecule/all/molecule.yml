@@ -1,0 +1,82 @@
+---
+dependency:
+  name: galaxy
+driver:
+  name: docker
+scenario:
+  name: all
+  test_sequence:
+    - destroy
+    - create
+    - prepare
+    - converge
+    - idempotence
+    #- verify
+    - destroy
+platforms:
+  - name: apps-freeipa-server-ubuntu22
+    pre_build_image: true
+    image: lotusnoir/ansible_molecule_test_images:ubuntu22
+    docker_host: "${DOCKER_HOST:-unix://var/run/docker.sock}"
+    privileged: true
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    groups:
+      - python3
+  - name: apps-freeipa-server-centos7
+    pre_build_image: true
+    image: lotusnoir/ansible_molecule_test_images:centos7
+    docker_host: "${DOCKER_HOST:-unix://var/run/docker.sock}"
+    privileged: true
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+  - name: apps-freeipa-server-rocky8
+    pre_build_image: true
+    image: lotusnoir/ansible_molecule_test_images:rocky8
+    docker_host: "${DOCKER_HOST:-unix://var/run/docker.sock}"
+    privileged: true
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    groups:
+      - python3
+  - name: apps-freeipa-server-oraclelinux7
+    pre_build_image: true
+    image: lotusnoir/ansible_molecule_test_images:oraclelinux7
+    docker_host: "${DOCKER_HOST:-unix://var/run/docker.sock}"
+    privileged: true
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+  - name: apps-freeipa-server-oraclelinux8
+    pre_build_image: true
+    image: lotusnoir/ansible_molecule_test_images:oraclelinux8
+    docker_host: "${DOCKER_HOST:-unix://var/run/docker.sock}"
+    privileged: true
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    groups:
+      - python3
+  - name: apps-freeipa-server-oraclelinux9
+    pre_build_image: true
+    image: lotusnoir/ansible_molecule_test_images:oraclelinux9
+    docker_host: "${DOCKER_HOST:-unix://var/run/docker.sock}"
+    privileged: true
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    groups:
+      - python3
+
+provisioner:
+  name: ansible
+  playbooks:
+    prepare: prepare.yml
+    converge: playbook.yml
+  inventory:
+    group_vars:
+      python3:
+        ansible_python_interpreter: /usr/bin/python3
+    host_vars:
+      bullseye:
+        ansible_python_interpreter: "/usr/bin/python3.9"
+
+verifier:
+  name: ansible
