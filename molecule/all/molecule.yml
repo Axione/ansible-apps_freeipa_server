@@ -77,6 +77,8 @@ provisioner:
     host_vars:
       bullseye:
         ansible_python_interpreter: "/usr/bin/python3.9"
+      bookworm:
+        ansible_python_interpreter: "/usr/bin/python3.9"
 
 verifier:
   name: ansible
