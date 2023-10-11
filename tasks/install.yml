@@ -1,90 +1,26 @@
 ---
-- name: "Prepare host"
-  when: freeipa_server_configure_hostname
-  block:
-    - name: "Ensure valid hostname"
-      ansible.builtin.hostname:
-        name: "{{ freeipa_server_hostname }}"
+- name: Import asserts tasks
+  ansible.builtin.import_tasks: asserts.yml
 
-    - name: "Ensure hostname resolve to ip and not localhost"
-      ansible.builtin.replace:
-        path: '{{ freeipa_server_hosts_path }}'
-        regexp: '^127.0.0.1(\s+.*)?$'
-        replace: '{{ ansible_default_ipv4.address }}\1 {{ freeipa_server_hostname }}'
+- name: Import prepare tasks
+  ansible.builtin.import_tasks: prepare.yml
 
-- name: "Ensure ipv6 is not disable"
-  ansible.builtin.sysctl:
-    name: net.ipv6.conf.all.disable_ipv6
-    value: '0'
-    sysctl_set: true
-    state: present
-    reload: true
-
-- name: "Install rng-tools for better entropie"
-  ansible.builtin.package:
-    name: rng-tools
-    state: present
-
-- name: "Enable and start rng-tools"
-  ansible.builtin.service:
-    name: rngd
-    enabled: true
-    state: started
+- name: Import firewalld tasks
+  ansible.builtin.import_tasks: firewalld.yml
 
 - name: "Install required packages"
   ansible.builtin.package:
-    name: ['@idm:DL1', 'freeipa-server', 'firewalld', 'ipa-server-trust-ad', 'samba-client']
+    name:
+      - ipa-server
+      - ipa-server-dns
+      - ipa-server-trust-ad
+      - patch
+      - ipa-healthcheck
+      - ipa-client-epn
+    # - samba-client
+    #name: ['@idm:DL1', 'freeipa-server', 'firewalld', 'ipa-server-trust-ad', 'samba-client']
     state: present
   register: freeipa_install
-
-- name: "Check tasks"
-  when: freeipa_server_configure_firewalld
-  block:
-    - name: "Open firewall ports"
-      ansible.builtin.firewalld:
-        service: "{{ item }}"
-        permanent: true
-        state: enabled
-      with_items:
-        - http
-        - https
-        - dns
-        - ntp
-        - freeipa-ldap
-        - freeipa-ldaps
-        - kerberos
-      notify: reload firewalld
-      tags: firewall
-
-    - name: "Open firewall ports for prometheus"
-      ansible.builtin.firewalld:
-        port: "{{ item }}"
-        permanent: true
-        state: enabled
-      with_items:
-        - 9100/tcp
-        - 9128/tcp
-      notify: reload firewalld
-      tags: firewall
-
-    - name: "Open firewall ports for ad trust"
-      ansible.builtin.firewalld:
-        port: "{{ item }}"
-        permanent: true
-        state: enabled
-      with_items:
-        - 135/tcp
-        - 138/tcp
-        - 139/tcp
-        - 445/tcp
-        - 1024-1500/tcp
-        - 3268/tcp
-        - 138/udp
-        - 139/udp
-        - 389/udp
-        - 445/udp
-      notify: reload firewalld
-      tags: firewall
 
 - name: "Install tasks"
   when: freeipa_install.changed or freeipa_server_force_install|bool

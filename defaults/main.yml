@@ -1,13 +1,41 @@
 ---
-freeipa_server_configure_hostname: true
+freeipa_server_configure_hostname: false
+freeipa_server_configure_ipv6: false
+freeipa_server_install_firewalld: false
+freeipa_server_configure_firewalld: false
+freeipa_server_firewalld_ports:
+  - http
+  - https
+  - ldaps
+  - kpasswd
+  - dns
+  - ntp
+  - freeipa-ldap
+  - freeipa-ldaps
+  - freeipa-replication
+  - freeipa-trust
+  - kerberos
+#  - 9100/tcp         # Prometheus
+#  - 9128/tcp         # Prometheus
+#  - 135/tcp          # AD trust
+#  - 138/tcp          # AD trust
+#  - 139/tcp          # AD trust
+#  - 445/tcp          # AD trust
+#  - 1024-1500/tcp    # AD trust
+#  - 3268/tcp         # AD trust
+#  - 138/udp          # AD trust
+#  - 139/udp          # AD trust
+#  - 389/udp          # AD trust
+#  - 445/udp          # AD trust
+
+
+freeipa_server_force_install: true
 freeipa_server_hostname: "{{ ansible_fqdn }}"
 freeipa_server_type: master
 freeipa_server_admin_password: "strongpassword"
 freeipa_server_ds_password: "strongpassword"
 freeipa_server_domain: "example.com"
 freeipa_server_realm: "{{ freeipa_server_domain |upper }}"
-freeipa_server_force_install: false
-freeipa_server_configure_firewalld: true
 
 freeipa_server_install_options:
   - "--realm={{ freeipa_server_realm }}"

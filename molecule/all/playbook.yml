@@ -4,10 +4,10 @@
   become: true
   any_errors_fatal: true
 
+  vars:
+    freeipa_server_hosts_path: "/etc/hosts2"
+
   tasks:
     - name: Include role
       ansible.builtin.include_role:
         name: ansible-apps_freeipa_server
-
-  vars:
-    freeipa_server_hosts_path: "/etc/hosts2"

@@ -1,0 +1,31 @@
+---
+#- name: "Ensure ipv6 is not disable"
+#  ansible.builtin.sysctl:
+#    name: net.ipv6.conf.lo.disable_ipv6
+#    value: '1'
+#    sysctl_set: true
+#    state: present
+#    reload: true
+
+- name: Check inventory_hostname to fqdn
+  ansible.builtin.assert:
+    that:
+      - inventory_hostname == ansible_facts["fqdn"]
+    fail_msg: Hostname does not match inventory
+    quiet: true
+
+- name: check parameter net.ipv6.conf.lo.disable_ipv6
+  ansible.builtin.shell: |
+    set -o pipefail
+    sysctl -a | grep net.ipv6.conf.lo.disable_ipv6 | awk '{print $NF}'
+  args:
+    executable: /bin/bash
+  register: ipv6_lo_conf
+  changed_when: false
+
+- name: Check lo ipv6 is enable in kernel
+  ansible.builtin.assert:
+    that:
+      - ipv6_lo_conf.stdout == "1"
+    fail_msg: Ipv6 not enable please add net.ipv6.conf.lo.disable_ipv6 = 1 in sysctl
+    quiet: true
