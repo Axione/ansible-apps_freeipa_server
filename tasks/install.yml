@@ -1,11 +1,11 @@
 ---
-- name: Import asserts tasks
+- name: "Import asserts tasks"
   ansible.builtin.import_tasks: asserts.yml
 
-- name: Import prepare tasks
+- name: "Import prepare tasks"
   ansible.builtin.import_tasks: prepare.yml
 
-- name: Import firewalld tasks
+- name: "Import firewalld tasks"
   ansible.builtin.import_tasks: firewalld.yml
 
 - name: "Install required packages"
@@ -25,15 +25,10 @@
 - name: "Install tasks"
   when: freeipa_install.changed or freeipa_server_force_install|bool
   block:
-    - name: "Change Umask to 0022 to make installer working"
-      ansible.builtin.shell: umask 0022 && umask
-      changed_when: false
-      notify: restart ipa services
-
     - name: "MASTER - Configure FreeIPA server (take a while )"
-      ansible.builtin.command: "{{ freeipa_launch_command }} {{ freeipa_server_install_options | join(' ') }}"
-      args:
-        creates: /etc/ipa/default.conf
+      ansible.builtin.command: "umask 0022 && {{ freeipa_launch_command }} {{ freeipa_server_install_options | join(' ') }}"
+      #args:
+      #  creates: /etc/ipa/default.conf
       when:
         - freeipa_server_type == 'master'
       notify: restart ipa services
@@ -54,8 +49,11 @@
       when:
         - freeipa_server_type == 'replica'
 
-    - name: "Global - Ensure admin config / auth to Kerberos realm"
-      ansible.builtin.shell: |
-        set -o pipefail
-        echo '{{ freeipa_server_admin_password }}' | kinit admin
-      changed_when: false
+## Verif
+- name: "Global - Ensure admin config / auth to Kerberos realm"
+  ansible.builtin.shell: |
+    set -o pipefail
+    echo '{{ freeipa_server_admin_password }}' | kinit admin
+  changed_when: false
+
+#ipactl status
