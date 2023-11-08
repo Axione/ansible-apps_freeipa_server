@@ -1,0 +1,15 @@
+# VERSION 7 - DO NOT REMOVE THIS LINE
+
+RewriteEngine on
+RewriteCond %{HTTP_HOST} ^(.*)\.{{ freeipa_server_domain.split('.')[-2:] | join('.') | regex_replace("[.]", "\.")}}$ [NC]
+RewriteRule ^/$ https://%1.{{ freeipa_server_domain.split('.')[-2:] | join('.')  }}/ipa/ui [L,NC,R=301]
+RewriteCond %{HTTP_HOST}    !^{{ ansible_fqdn }}$ [NC]
+RewriteCond %{HTTP_HOST}    !^ipa-ca.{{ freeipa_server_domain }}$ [NC]
+RewriteCond %{SERVER_PORT}  !^443$
+RewriteCond %{REQUEST_URI}  !^/ipa/(errors|config|crl)
+RewriteCond %{REQUEST_URI}  !^/ipa/[^\?]+(\.js|\.css|\.png|\.gif|\.ico|\.woff|\.svg|\.ttf|\.eot)$
+RewriteCond %{HTTP_HOST}    ^ipa-ca.{{ freeipa_server_domain }}$ [NC]
+RewriteCond %{REQUEST_URI}  !^/ipa/crl
+RewriteCond %{REQUEST_URI}  !^/(ca|kra|pki|acme)
+RewriteRule ^/(.*)          https://{{ ansible_fqdn }}/$1 [L,R=301]
+RewriteRule ^/ipa/ui/js/freeipa/plugins.js$    /ipa/wsgi/plugins.py [PT]

@@ -26,7 +26,7 @@
   when: freeipa_install.changed or freeipa_server_force_install|bool
   block:
     - name: "MASTER - Configure FreeIPA server (take a while )"
-      ansible.builtin.command: "umask 0022 && {{ freeipa_launch_command }} {{ freeipa_server_install_options | join(' ') }}"
+      ansible.builtin.shell: "umask 0022 && {{ freeipa_launch_command }} {{ freeipa_server_install_options | join(' ') }}"
       #args:
       #  creates: /etc/ipa/default.conf
       when:
@@ -48,6 +48,13 @@
       ansible.builtin.command: "{{ freeipa_launch_command }} {{ freeipa_replica_install_options | join(' ') }}"
       when:
         - freeipa_server_type == 'replica'
+
+- name: "Replace ipa-rewrite"
+  ansible.builtin.template:
+    src: ipa-rewrite.conf.j2
+    dest: /etc/httpd/conf.d/ipa-rewrite.conf
+    mode: 0644
+  notify: ipa restart
 
 ## Verif
 - name: "Global - Ensure admin config / auth to Kerberos realm"

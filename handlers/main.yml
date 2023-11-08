@@ -9,3 +9,6 @@
   ansible.builtin.service:
     name: firewalld
     state: reloaded
+
+- name: ipa restart
+  ansible.builtin.command: ipactl restart
