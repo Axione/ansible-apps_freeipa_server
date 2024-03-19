@@ -27,25 +27,29 @@
   block:
     - name: "MASTER - Configure FreeIPA server (take a while )"
       ansible.builtin.shell: "umask 0022 && {{ freeipa_launch_command }} {{ freeipa_server_install_options | join(' ') }}"
+      changed_when: false
       #args:
       #  creates: /etc/ipa/default.conf
       when:
         - freeipa_server_type == 'master'
-      notify: restart ipa services
+      notify: Restart ipa services
 
     - name: "REPLICA 1/3 - Install ipa client"
       ansible.builtin.command: "ipa-client-install -U {{ freeipa_client_install_options | join(' ') }}"
+      changed_when: false
       when:
         - freeipa_server_type == 'replica'
 
     - name: "REPLICA 2/3 - add to ipservers group"
       ansible.builtin.command: "ipa hostgroup-add-member ipaservers --hosts {{ ansible_fqdn }}"
+      changed_when: false
       delegate_to: "{{ freeipa_server_master_fqdn }}"
       when:
         - freeipa_server_type == 'replica'
 
     - name: "REPLICA 3/3 - Install replica (take a while)"
       ansible.builtin.command: "{{ freeipa_launch_command }} {{ freeipa_replica_install_options | join(' ') }}"
+      changed_when: false
       when:
         - freeipa_server_type == 'replica'
 
@@ -54,7 +58,7 @@
     src: ipa-rewrite.conf.j2
     dest: /etc/httpd/conf.d/ipa-rewrite.conf
     mode: 0644
-  notify: ipa restart
+  notify: Ipa restart
 
 ## Verif
 - name: "Global - Ensure admin config / auth to Kerberos realm"

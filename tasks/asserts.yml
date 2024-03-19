@@ -30,7 +30,7 @@
     fail_msg: Hostname is too long, please make it shorter
     quiet: true
 
-- name: check parameter net.ipv6.conf.lo.disable_ipv6
+- name: Check parameter net.ipv6.conf.lo.disable_ipv6
   ansible.builtin.shell: |
     set -o pipefail
     sysctl -a | grep net.ipv6.conf.lo.disable_ipv6 | awk '{print $NF}'

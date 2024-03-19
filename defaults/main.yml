@@ -35,7 +35,7 @@ freeipa_server_type: master
 freeipa_server_admin_password: "strongpassword"
 freeipa_server_ds_password: "strongpassword"
 freeipa_server_domain: "example.com"
-freeipa_server_realm: "{{ freeipa_server_domain |upper }}"
+freeipa_server_realm: "{{ freeipa_server_domain | upper }}"
 
 freeipa_server_install_options: ""
 #  - "--no-host-dns"

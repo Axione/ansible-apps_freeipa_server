@@ -12,6 +12,6 @@
     permanent: true
     state: enabled
   with_items: "{{ freeipa_server_firewalld_ports }}"
-  notify: reload firewalld
+  notify: Reload firewalld
   when: freeipa_server_configure_firewalld | bool
   tags: firewall
