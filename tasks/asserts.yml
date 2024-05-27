@@ -1,12 +1,4 @@
 ---
-#- name: "Ensure ipv6 is not disable"
-#  ansible.builtin.sysctl:
-#    name: net.ipv6.conf.lo.disable_ipv6
-#    value: '0'
-#    sysctl_set: true
-#    state: present
-#    reload: true
-
 - name: Check inventory_hostname to fqdn
   ansible.builtin.assert:
     that:
@@ -14,7 +6,7 @@
     fail_msg: Hostname does not match inventory
     quiet: true
 
-- name: Get hostanme length
+- name: Get hostname length
   ansible.builtin.shell: |
     set -o pipefail
     echo $(hostname -f) | wc -m
@@ -44,4 +36,20 @@
     that:
       - ipv6_lo_conf.stdout == "0"
     fail_msg: Ipv6 not enable please add net.ipv6.conf.lo.disable_ipv6 = 0 in sysctl
+    quiet: true
+
+- name: Check parameter net.ipv6.conf.all.disable_ipv6
+  ansible.builtin.shell: |
+    set -o pipefail
+    sysctl -a | grep net.ipv6.conf.all.disable_ipv6 | awk '{print $NF}'
+  args:
+    executable: /bin/bash
+  register: ipv6_all_conf
+  changed_when: false
+
+- name: Check all ipv6 is disaable in kernel
+  ansible.builtin.assert:
+    that:
+      - ipv6_all_conf.stdout == "1"
+    fail_msg: Ipv6 not disable please add net.ipv6.conf.all.disable_ipv6 = 1 in sysctl
     quiet: true

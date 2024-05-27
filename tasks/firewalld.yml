@@ -3,8 +3,6 @@
   ansible.builtin.package:
     name: firewalld
     state: present
-  when: freeipa_server_install_firewalld | bool
-  tags: firewall
 
 - name: "Open firewall ports"
   ansible.builtin.firewalld:
@@ -13,5 +11,3 @@
     state: enabled
   with_items: "{{ freeipa_server_firewalld_ports }}"
   notify: Reload firewalld
-  when: freeipa_server_configure_firewalld | bool
-  tags: firewall

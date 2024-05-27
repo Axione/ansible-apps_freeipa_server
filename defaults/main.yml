@@ -1,7 +1,4 @@
 ---
-freeipa_server_configure_hostname: false
-freeipa_server_configure_ipv6: false
-freeipa_server_install_firewalld: false
 freeipa_server_configure_firewalld: false
 freeipa_server_firewalld_ports:
   - http
@@ -28,10 +25,17 @@ freeipa_server_firewalld_ports:
 #  - 389/udp          # AD trust
 #  - 445/udp          # AD trust
 
+freeipa_packages:
+  - ipa-server
+  - ipa-server-dns
+  - ipa-server-trust-ad
+  - patch
+  - ipa-healthcheck
+  - ipa-client-epn
 
 freeipa_server_force_install: true
 freeipa_server_hostname: "{{ ansible_fqdn }}"
-freeipa_server_type: master
+freeipa_server_type: master # or replica
 freeipa_server_admin_password: "strongpassword"
 freeipa_server_ds_password: "strongpassword"
 freeipa_server_domain: "example.com"
@@ -58,4 +62,5 @@ freeipa_client_install_options:
   - "--no-ntp"
 
 freeipa_replica_install_options:
+  - "--realm={{ freeipa_server_realm }}"
   - "--setup-ca"
