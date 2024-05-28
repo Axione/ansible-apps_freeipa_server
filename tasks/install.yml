@@ -36,6 +36,7 @@
     - name: "REPLICA 2/3 - add to ipservers group"
       ansible.builtin.command: "ipa hostgroup-add-member ipaservers --hosts {{ ansible_fqdn }}"
       changed_when: false
+      failed_when: false
       delegate_to: "{{ freeipa_server_master_fqdn }}"
       when:
         - freeipa_server_type == 'replica'

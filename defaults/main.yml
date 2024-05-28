@@ -41,16 +41,16 @@ freeipa_server_ds_password: "strongpassword"
 freeipa_server_domain: "example.com"
 freeipa_server_realm: "{{ freeipa_server_domain | upper }}"
 
-freeipa_server_install_options: ""
-#  - "--no-host-dns"
-#  - "--hostname={{ freeipa_server_hostname }}"
-#  - "--realm={{ freeipa_server_realm }}"
-#  - "--domain={{ freeipa_server_domain }}"
-#  - "--ds-password {{ freeipa_server_ds_password }}"
-#  - "--admin-password {{ freeipa_server_admin_password }}"
-#  - "--mkhomedir"
-#  - "--ip-address={{ ansible_default_ipv4.address }}"
-#  - "--no-ntp"
+freeipa_server_install_options:
+  - "--hostname={{ freeipa_server_hostname }}"
+  - "--domain={{ freeipa_server_domain }}"
+  - "--realm={{ freeipa_server_realm }}"
+  - "--ds-password {{ freeipa_server_ds_password }}"
+  - "--admin-password {{ freeipa_server_admin_password }}"
+  - "--ip-address={{ ansible_default_ipv4.address }}"
+  - "--mkhomedir"
+  - "--no-host-dns"
+  - "--no-ntp"
 
 freeipa_client_install_options:
   - "--domain={{ freeipa_server_domain }}"
@@ -60,7 +60,8 @@ freeipa_client_install_options:
   - "-p admin"
   - "-w {{ freeipa_server_admin_password }}"
   - "--no-ntp"
+  - "--force-join"
 
 freeipa_replica_install_options:
-  - "--realm={{ freeipa_server_realm }}"
+  - "--domain={{ freeipa_server_domain }}"
   - "--setup-ca"
