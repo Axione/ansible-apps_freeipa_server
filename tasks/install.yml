@@ -42,7 +42,7 @@
         - freeipa_server_type == 'replica'
 
     - name: "REPLICA 3/3 - Install replica (take a while)"
-      ansible.builtin.command: "ipa-replica-install --unattended --server={{ freeipa_server_master_fqdn }} {{ freeipa_replica_install_options | join(' ') }}"
+      ansible.builtin.command: "umask 0022 && ipa-replica-install --unattended --server={{ freeipa_server_master_fqdn }} {{ freeipa_replica_install_options | join(' ') }}"
       changed_when: false
       when:
         - freeipa_server_type == 'replica'
