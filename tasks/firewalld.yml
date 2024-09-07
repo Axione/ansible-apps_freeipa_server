@@ -5,7 +5,7 @@
     state: present
 
 - name: "Open firewall ports"
-  ansible.builtin.firewalld:
+  ansible.posix.firewalld:
     service: "{{ item }}"
     permanent: true
     state: enabled
