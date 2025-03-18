@@ -14,50 +14,56 @@ scenario:
     # - verify
     - destroy
 platforms:
-  - name: apps-freeipa-server-ubuntu24
+  - name: apps-freeipa-server-ubuntu22
+    image: lotusnoir/ansible_molecule_test_images:ubuntu22
     pre_build_image: true
-    image: lotusnoir/ansible_molecule_test_images:ubuntu24
-    docker_host: "${DOCKER_HOST:-unix://var/run/docker.sock}"
+    cgroupns_mode: host
+    privileged: true
     volumes:
       - /sys/fs/cgroup:/sys/fs/cgroup:rw
     groups:
       - python3
-  - name: apps-freeipa-server-ubuntu22
+  - name: apps-freeipa-server-ubuntu24
+    image: lotusnoir/ansible_molecule_test_images:ubuntu24
     pre_build_image: true
-    image: lotusnoir/ansible_molecule_test_images:ubuntu22
-    docker_host: "${DOCKER_HOST:-unix://var/run/docker.sock}"
+    cgroupns_mode: host
+    privileged: true
     volumes:
       - /sys/fs/cgroup:/sys/fs/cgroup:rw
     groups:
       - python3
   - name: apps-freeipa-server-rocky8
-    pre_build_image: true
     image: lotusnoir/ansible_molecule_test_images:rocky8
-    docker_host: "${DOCKER_HOST:-unix://var/run/docker.sock}"
+    pre_build_image: true
+    cgroupns_mode: host
+    privileged: true
     volumes:
       - /sys/fs/cgroup:/sys/fs/cgroup:rw
     groups:
       - python3
   - name: apps-freeipa-server-rocky9
-    pre_build_image: true
     image: lotusnoir/ansible_molecule_test_images:rocky9
-    docker_host: "${DOCKER_HOST:-unix://var/run/docker.sock}"
+    pre_build_image: true
+    cgroupns_mode: host
+    privileged: true
     volumes:
       - /sys/fs/cgroup:/sys/fs/cgroup:rw
     groups:
       - python3
   - name: apps-freeipa-server-oraclelinux8
-    pre_build_image: true
     image: lotusnoir/ansible_molecule_test_images:oraclelinux8
-    docker_host: "${DOCKER_HOST:-unix://var/run/docker.sock}"
+    pre_build_image: true
+    cgroupns_mode: host
+    privileged: true
     volumes:
       - /sys/fs/cgroup:/sys/fs/cgroup:rw
     groups:
       - python3
   - name: apps-freeipa-server-oraclelinux9
-    pre_build_image: true
     image: lotusnoir/ansible_molecule_test_images:oraclelinux9
-    docker_host: "${DOCKER_HOST:-unix://var/run/docker.sock}"
+    pre_build_image: true
+    cgroupns_mode: host
+    privileged: true
     volumes:
       - /sys/fs/cgroup:/sys/fs/cgroup:rw
     groups:
@@ -67,6 +73,7 @@ provisioner:
   name: ansible
   connection_options:
     ansible_remote_tmp: /tmp
+    ansible_python_interpreter: auto_silent
   playbooks:
     prepare: prepare.yml
     converge: playbook.yml

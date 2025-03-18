@@ -35,7 +35,7 @@ freeipa_packages:
 
 freeipa_server_force_install: true
 freeipa_server_hostname: "{{ ansible_fqdn }}"
-freeipa_server_type: master # or replica
+freeipa_server_type: master
 freeipa_server_admin_password: "strongpassword"
 freeipa_server_ds_password: "strongpassword"
 freeipa_server_domain: "example.com"

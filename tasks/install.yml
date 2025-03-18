@@ -47,12 +47,12 @@
       when:
         - freeipa_server_type == 'replica'
 
-#- name: "Replace ipa-rewrite"
-#  ansible.builtin.template:
-#    src: ipa-rewrite.conf.j2
-#    dest: /etc/httpd/conf.d/ipa-rewrite.conf
-#    mode: 0644
-#  notify: Ipa restart
+# - name: "Replace ipa-rewrite"
+#   ansible.builtin.template:
+#     src: ipa-rewrite.conf.j2
+#     dest: /etc/httpd/conf.d/ipa-rewrite.conf
+#     mode: 0644
+#   notify: Ipa restart
 
 ## Verif
 - name: "Global - Ensure admin config / auth to Kerberos realm"
@@ -60,5 +60,3 @@
     set -o pipefail
     echo '{{ freeipa_server_admin_password }}' | kinit admin
   changed_when: false
-
-#ipactl status
